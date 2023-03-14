@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import {  useHistory } from 'react-router-dom';
+import {  useNavigate  } from 'react-router-dom';
 import "./Login.css";
 import api from '../../api';
 import { Input, Button, Label, Media, Row, Col, FormGroup, Form} from 'reactstrap';
-import think from '../img/logo_branca.png'
+
 
 
 const Login = (props) => {
@@ -34,21 +34,25 @@ const Login = (props) => {
           }
     }
    
-    const history = useHistory();
+    const navigate  = useNavigate ();
     
 
    async function handleLogin(e){
         e.preventDefault();
 
         try {
-const response = await api.get(`erp_usuarios/${usu_login}/${usu_senha}`);
-console.log(response.data[0].codigofab[0].for_cod) 
+const response = await api.get(`usuariosvend/${usu_login}/${usu_senha}`);
+console.log(response.data[0].ven_numero[0]) 
 
 localStorage.setItem('usu_login', response.data[0].usu_login)
 localStorage.setItem('usu_senha', response.data[0].usu_senha)
-localStorage.setItem('for_cod', response.data[0].codigofab[0].for_cod)
+localStorage.setItem('ven_numero', response.data[0].ven_numero)
+localStorage.setItem('loja', response.data[0].ven_loja)
+localStorage.setItem('usu_tipo', response.data[0].usu_tipo)
      
-history.push('/vendaestoque')
+
+
+navigate('/metavendedoracliente')
 } catch (err) {
 alert('falha')
         }
@@ -62,7 +66,7 @@ alert('falha')
             <Row className="row">
                 <Col sm={6}>
                     <FormGroup className="title">  
-                        <h2 id="title-text" className="text">THINK FORNECEDOR</h2>
+                        <h2 id="title-text" className="text">THINK METAS</h2>
                     </FormGroup>
                 </Col>
             </Row>
@@ -70,7 +74,7 @@ alert('falha')
                 <Col sm={6}>
                     <FormGroup className="login">
                         <Input className="form" type="text" placeholder=" " id="login" value={usu_login} onChange={onChange1}></Input>
-                        <Label className={ isActive1 ? "Active" : ""}><i className="material-icons left">person</i>Usuário:</Label>
+                        <Label className={ isActive1 ? "Active" : ""}>Usuário:</Label>
                     </FormGroup>
                 </Col>
             </Row>
@@ -78,21 +82,19 @@ alert('falha')
                 <Col sm={6}>
                     <FormGroup className="senha">
                         <Input className="form" type="password" placeholder=" " id="senha" value={usu_senha} onChange={onChange2}></Input>
-                        <Label  className={ isActive2 ? "Active" : ""}><i className="material-icons left">lock</i>Senha:</Label>
+                        <Label  className={ isActive2 ? "Active" : ""}>Senha:</Label>
                     </FormGroup>
                 </Col>
             </Row>
             <Row>
                 <Col sm={6}>
                     <FormGroup>
-                        <Button id="buttonlogin" className="efeito efeito-1" type="submit">LOGIN<i className="material-icons left">login</i></Button>
+                        <Button id="buttonlogin" className="efeito efeito-1" type="submit">LOGIN</Button>
                     </FormGroup>
                 </Col>
             </Row>
         </Form>
-        <Row className="logo">
-                <Media id="thinklogo" src={think} />
-        </Row>
+
     </div>  
     )
 }
